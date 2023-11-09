@@ -126,12 +126,14 @@ class YOLOv1(nn.Module):
         )
 
     def init_weight(self):
-        pass
+        for m in self.modules():
+            if isinstance(m, (nn.Conv2d, nn.Linear)):
+                nn.init.xavier_normal_(m.weight)
     
     def forward(self, x):
         b,m,h,w = x.shape
         x = self.feature_extractor(x)
-        print(x.shape)
+        # print(x.shape)
         x = x.view(b, -1)
         x = self.head(x)
         return x
@@ -145,7 +147,7 @@ class YOLOv1(nn.Module):
 
 
 
-yolo = YOLOv1(1000)
-im = torch.ones((1,3,224,224))
-o = yolo(im)
-print(o.shape)
+# yolo = YOLOv1(1000)
+# im = torch.ones((1,3,224,224))
+# o = yolo(im)
+# print(o.shape)
